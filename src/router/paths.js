@@ -86,6 +86,13 @@ export default [
 				},
 				component: () => import(`@/views/DashboardViews/CardsView.vue`),
 			},
+			{
+				path: 'blank',
+				meta: {
+					name: 'Blank',
+				},
+				component: () => import(`@/views/DashboardViews/Blank.vue`),
+			},
 		],
 		//per route guard if you dont want to use the global version in /router/index
 		// beforeEnter: (to, from, next) => {

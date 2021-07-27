@@ -75,7 +75,7 @@
 							@click.native="setImage(img)"
 						/>
 					</v-flex>
-					<v-flex xs12>
+					<!-- <v-flex xs12>
 						<v-btn
 							href="https://github.com/ClintOxx/vuetify-admin-dashboard"
 							target="_blank"
@@ -120,7 +120,7 @@
 								</v-btn>
 							</div>
 						</div>
-					</v-flex>
+					</v-flex> -->
 				</v-layout>
 			</v-container>
 		</v-card>

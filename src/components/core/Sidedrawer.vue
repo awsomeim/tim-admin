@@ -1,15 +1,13 @@
 <template>
 	<v-navigation-drawer
 		v-model="drawerShown"
-		:temporary="alwaysClosed"
 		app
-		color="primary"
 		clipped
+		color="primary"
 		height="100%"
 	>
 		<v-list dense height="100%">
 			<v-img :src="image" height="100%">
-				<MaterialfyUserSnippet :showBottom="false" />
 				<v-row>
 					<v-divider class="mb-2" />
 					<!-- this section builds the links by use a for loop and iterating through links section
@@ -31,7 +29,7 @@
 						<v-list-item-title v-text="link.text" class="tertiary--text"  />
 					</v-list-item>
 					<v-divider class="mt-2" />
-					<v-list-item class="ms-2">
+					<!-- <v-list-item class="ms-2">
 						<v-switch
 							v-model="alwaysClosed"
 							:label="alwaysClosed ? 'Temp Drawer on' : 'Persistant Drawer on'"
@@ -43,7 +41,7 @@
 								</span>
 							</template>
 						</v-switch>
-					</v-list-item>
+					</v-list-item> -->
 				</v-row>
 			</v-img>
 		</v-list>
@@ -57,7 +55,7 @@ export default {
 	data() {
 		return {
 			group: false,
-			drawerShown: false, /* controls the opening and closing of drawer */
+			drawerShown: true, /* controls the opening and closing of drawer */
 			drawer: this.drawerState, /* this is just here for the watcher to wrok */
 			colorWatch: this.color, /* this is just here for the color watcher to wrok */
 			activeColor: "secondary",
@@ -99,6 +97,11 @@ export default {
 					to: "/notifications",
 					icon: "mdi-bell",
 					text: "Notifications",
+				},
+				{
+					to: "/blank",
+					icon: "mdi-ab-testing",
+					text: "Blank",
 				},
 			],
 		};

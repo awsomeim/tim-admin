@@ -21,7 +21,7 @@
 			<!-- these controls the search displaying in userSnippet -->
 			<v-divider />
 			<!-- this controls if the search box is shown -->
-			<v-row v-if="showSearch">
+			<!-- <v-row v-if="showSearch">
 				<v-col class="d-flex justify-center">
 					<v-text-field
 						v-model="message"
@@ -34,7 +34,7 @@
 					>
 					</v-text-field>
 				</v-col>
-			</v-row>
+			</v-row> -->
 			<v-card v-if="showBottom">
 				<v-divider />
 				<!-- this changes the background color based on theme -->

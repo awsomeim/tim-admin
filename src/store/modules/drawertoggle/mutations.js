@@ -15,7 +15,7 @@ const set = property => (state, dataPayload) => (state[property] = dataPayload)
 //       } 
 
 const toggleDrawerState = state => {
-    state.drawerState = true
+    state.drawerState = !state.drawerState
 }
 /* 
 	these are called in navbar.vue, settings.vue and sidedrawer.vue
