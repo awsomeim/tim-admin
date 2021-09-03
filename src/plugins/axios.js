@@ -12,23 +12,23 @@ const token = ls.get('tokenKey')
 
 // creates a new instance that you will call instead of axios.
 const restApi = axios.create({
-	baseURL: 'https://reqres.in/api/',
+	baseURL: 'http://www.tarotworld.site:8082/',
 	timeout: 3000,
 	headers: {
 		Authorization: 'Bearer ' + token,
 	},
 })
 // Sets the default global url used by all of this axios instance's requests
- const genericApi = axios.create({
-		baseURL: 'https://reqres.in/api/',
-		timeout: 3000,
-		headers: {},
- })
- if (token) {
-		restApi.defaults.headers.common['Authorization'] = 'Bearer ' + token
- }
- axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
- restApi.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
+const genericApi = axios.create({
+	baseURL: 'https://reqres.in/api/',
+	timeout: 3000,
+	headers: {},
+})
+if (token) {
+	restApi.defaults.headers.common['Authorization'] = 'Bearer ' + token
+}
+axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
+restApi.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
 restApi.defaults.headers.get["Accepts"] = "application/json";
 genericApi.defaults.headers.get["Accepts"] = "application/json";
 
@@ -62,7 +62,7 @@ restApi.interceptors.response.use(
 
 
 
-export  {
-  restApi,
-  genericApi
+export {
+	restApi,
+	genericApi
 };

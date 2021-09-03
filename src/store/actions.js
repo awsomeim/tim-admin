@@ -10,17 +10,18 @@ You then create a promise in the "login"'s return which is where we put the code
 that we will use to trigger mutations.
 */
 
-async function login({ commit }, userData) {
+async function login ({ commit }, userData) {
 	// one day ill implement snackbars with the auth state or use it in a component or footer
 	commit('auth_request')
-  let response = await restApi
-		.post('login', {
+	let response = await restApi
+		.post('v1/admin/user/login', {
 			username: userData.username,
 			password: userData.password,
 		})
 		.then((response) => {
 			// we use the data we get back in the response object after the promise succeeds
 			//you can change the data object props to match whatever your sever sends
+			console.log(response);
 			const token = response.data.token
 			const user = response.data.username
 			// storing jwt in localStorage. https cookie is safer place to store
@@ -35,12 +36,12 @@ async function login({ commit }, userData) {
 			commit('auth_error')
 			ls.remove('token')
 		})
-  return response
+	return response
 }
 
 export default {
 	login,
-	logout({ commit }) {
+	logout ({ commit }) {
 		return new Promise((resolve, reject) => {
 			commit('logout')
 			ls.remove('token')
@@ -50,7 +51,7 @@ export default {
 				.catch((error) => reject(error))
 		})
 	},
-	refreshtoken({ commit }) {
+	refreshtoken ({ commit }) {
 		restApi
 			.get('/refresh')
 			.then((response) => {
@@ -66,7 +67,7 @@ export default {
 				console.log(error)
 			})
 	},
-	getTableList({ commit }, tableName) {
+	getTableList ({ commit }, tableName) {
 		restApi
 			.get(`/${tableName}`)
 			.then((response) => {
@@ -76,7 +77,7 @@ export default {
 			})
 			.catch((error) => console.log(error))
 	},
-	updateTableItem(tableData) {
+	updateTableItem (tableData) {
 		return new Promise((resolve, reject) => {
 			let httpmethod = tableData.method //allows you to delete/update and change the request method type without hardcoding
 			axios({
