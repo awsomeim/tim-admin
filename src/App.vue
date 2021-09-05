@@ -2,52 +2,50 @@
 depending on if you are logged in or not , 
 so that is what ExternalView and DashboardView are for. LoginView renders in Externalview-->
 <template>
-
     <transition mode="out-in">
-      <router-view />
+        <router-view />
     </transition>
-
 </template>
 
 
 <script>
 // checks to see if auth jwt token is valid or has expired, if it gets back 401 error log out
-import Vue from "vue";
-import * as Sentry from '@sentry/vue'
-import { Integrations } from '@sentry/tracing'
+// import Vue from "vue";
+// import * as Sentry from '@sentry/vue'
+// import { Integrations } from '@sentry/tracing'
 
-Sentry.init({
-	Vue,
-	logErrors: true,
-	dsn: 'https://6c05050f794343c286b87c6ea643df31@o920341.ingest.sentry.io/5865924',
-	integrations: [new Integrations.BrowserTracing()],
+// Sentry.init({
+//     Vue,
+//     logErrors: true,
+//     dsn: 'https://6c05050f794343c286b87c6ea643df31@o920341.ingest.sentry.io/5865924',
+//     integrations: [new Integrations.BrowserTracing()],
 
-	// Set tracesSampleRate to 1.0 to capture 100%
-	// of transactions for performance monitoring.
-	// We recommend adjusting this value in production
-	tracesSampleRate: 1.0,
-})
+//     // Set tracesSampleRate to 1.0 to capture 100%
+//     // of transactions for performance monitoring.
+//     // We recommend adjusting this value in production
+//     tracesSampleRate: 1.0,
+// })
 
 export default {
-  name: 'App',
-  created: function () {
-    this.$http.interceptors.response.use(
-      (response) => {
-        return response;
-      },
-      (error) => {
-        if (error.response.status === 401) {
-          if (this.$store.getters.authorized) {
-            this.$store.dispatch("refreshtoken");
-          } else {
-            return Promise.reject(error);
-          }
-        } else {
-          return Promise.reject(error);
-        }
-      }
-    );
-  },
+    name: 'App',
+    created: function () {
+        this.$http.interceptors.response.use(
+            (response) => {
+                return response;
+            },
+            (error) => {
+                if (error.response.status === 401) {
+                    if (this.$store.getters.authorized) {
+                        this.$store.dispatch("refreshtoken");
+                    } else {
+                        return Promise.reject(error);
+                    }
+                } else {
+                    return Promise.reject(error);
+                }
+            }
+        );
+    },
 
 };
 </script>
@@ -75,7 +73,7 @@ $nprogress-height: 4px;
 //@import "@/styles/index.scss";
 /* Remove in 1.2 */
 .v-datatable thead th.column.sortable i {
-  vertical-align: unset;
+    vertical-align: unset;
 }
 </style>
 

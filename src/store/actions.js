@@ -22,8 +22,11 @@ async function login ({ commit }, userData) {
 			// we use the data we get back in the response object after the promise succeeds
 			//you can change the data object props to match whatever your sever sends
 			console.log(response);
-			const token = response.data.token
-			const user = response.data.username
+			if (response.data.errno) {
+				throw new Error(response.data.errmsg)
+			}
+			const token = response.data.data.token
+			const user = response.data.data.username
 			// storing jwt in localStorage. https cookie is safer place to store
 			ls.set('tokenKey', { token: token }) // using secure-ls to encrypt local storage
 			ls.set('userKey', { user: user })
@@ -35,6 +38,7 @@ async function login ({ commit }, userData) {
 			console.log('login error' + err)
 			commit('auth_error')
 			ls.remove('token')
+			throw err;
 		})
 	return response
 }

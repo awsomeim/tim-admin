@@ -50,12 +50,18 @@ export default [
 					import(`@/views/DashboardViews/UserProfileView.vue`),
 			},
 			{
-				path: 'table-list',
+				path: 'square-list',
 				meta: {
-					name: 'TableList',
+					name: 'squareList',
 				},
-				component: () =>
-					import(`@/views/DashboardViews/SimpleTablesView.vue`),
+				component: () => import(`@/views/DashboardViews/SquareListView.vue`)
+			},
+			{
+				path: 'user-list',
+				meta: {
+					name: 'userList',
+				},
+				component: () => import(`@/views/DashboardViews/user/list.vue`),
 			},
 			{
 				path: 'data-tables',
