@@ -40,23 +40,6 @@
                             </v-list-item>
                         </v-list-group>
                     </v-list>
-                    <template v-for="(link, i) in links">
-                        <v-list-item
-                            :key="i"
-                            :to="link.to"
-                            :active-class="activeColor"
-                            class="ms-4"
-                            :class="
-                                link.to === $route.path ? 'tertiary--text' : ''
-                            "
-                        >
-                            <v-list-item-action>
-                                <v-icon>{{ link.icon }}</v-icon>
-                            </v-list-item-action>
-
-                            <v-list-item-title v-text="link.text" />
-                        </v-list-item>
-                    </template>
                     <v-divider class="mt-2" />
                 </v-row>
             </v-img>

@@ -54,14 +54,14 @@ export default [
 				meta: {
 					name: 'squareList',
 				},
-				component: () => import(`@/views/DashboardViews/SquareListView.vue`)
+				component: () => import(`@/views/DashboardViews/Square/ListView.vue`)
 			},
 			{
 				path: 'user-list',
 				meta: {
 					name: 'userList',
 				},
-				component: () => import(`@/views/DashboardViews/user/list.vue`),
+				component: () => import(`@/views/DashboardViews/User/ListView.vue`),
 			},
 			{
 				path: 'data-tables',

@@ -21,7 +21,6 @@ async function login ({ commit }, userData) {
 		.then((response) => {
 			// we use the data we get back in the response object after the promise succeeds
 			//you can change the data object props to match whatever your sever sends
-			console.log(response);
 			if (response.data.errno) {
 				throw new Error(response.data.errmsg)
 			}
@@ -31,6 +30,8 @@ async function login ({ commit }, userData) {
 			ls.set('tokenKey', { token: token }) // using secure-ls to encrypt local storage
 			ls.set('userKey', { user: user })
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+			restApi.defaults.headers.common['Authorization'] = 'Bearer ' + token
+			// window.console.log(restApi.defaults.headers.common['Authorization'])
 			// calling the mutation "auth_success" to change/update state.properties to the new values passed along in the second param
 			commit('auth_success', { token, user })
 		})

@@ -7,6 +7,7 @@ let ls = new SecureLS()
 
 // state set to the previous token, the authorization Axios header set to same
 const token = ls.get('tokenKey')
+window.console.log(token);
 //const token = localStorage.getItem("token");
 
 
@@ -15,7 +16,7 @@ const restApi = axios.create({
 	baseURL: 'http://www.tarotworld.site:8082/',
 	timeout: 3000,
 	headers: {
-		Authorization: 'Bearer ' + token,
+		Authorization: 'Bearer ' + token?.token ?? '',
 	},
 })
 // Sets the default global url used by all of this axios instance's requests
@@ -29,8 +30,6 @@ if (token) {
 }
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
 restApi.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
-restApi.defaults.headers.get["Accepts"] = "application/json";
-genericApi.defaults.headers.get["Accepts"] = "application/json";
 
 restApi.interceptors.request.use(
 	function (request) {
