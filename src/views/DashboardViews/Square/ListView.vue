@@ -1,71 +1,128 @@
 <template>
-    <v-data-table
-        :headers="table.headers"
-        :items="squareList"
-        class="elevation-1"
-        hide-default-footer
-    >
-        <template v-slot:item.owner_nickname="{ item }">
-            <v-col>
-                <v-avatar>
-                    <img :src="item.owner_pic" />
-                </v-avatar>
-                <span>{{ item.owner_nickname }}</span>
+    <v-container fluid>
+        <v-row no-gutters class="mb-2">
+            <v-col cols="6">
+                <span class="text-h6">生活记列表</span>
             </v-col>
-        </template>
-        <template v-slot:item.memo="{ item }">
-            <div class="memo-container">
-                <span>{{ item.memo }}</span>
-            </div>
-        </template>
-        <template v-slot:item.media="{ item }">
-            <v-sheet class="mx-auto" elevation="8" max-width="400">
-                <v-slide-group
-                    v-model="model"
-                    class="pa-4"
-                    active-class="success"
-                    show-arrows
+            <v-col cols="6"> </v-col>
+        </v-row>
+        <v-row no-gutters>
+            <v-col cols="12">
+                <v-data-table
+                    :headers="table.headers"
+                    :items="squareList"
+                    class="elevation-1"
+                    hide-default-footer
+                    :item-class="itemRowBackground"
                 >
-                    <v-slide-item
-                        v-for="url in item.media"
-                        :key="url"
-                        v-slot="{ active, toggle }"
-                    >
-                        <v-card
-                            :color="active ? undefined : 'grey lighten-1'"
-                            class="ma-4"
-                            height="200"
-                            width="100"
-                            @click="toggle"
-                        >
-                            <v-row
-                                class="fill-height"
-                                align="center"
-                                justify="center"
-                            >
-                                <v-img :src="url" />
+                    <template v-slot:[`item.owner_nickname`]="{ item }">
+                        <div>
+                            <v-avatar class="mr-2">
+                                <img :src="item.owner_pic" />
+                            </v-avatar>
+                            <span>{{ item.owner_nickname }}</span>
+                        </div>
+                    </template>
+                    <template v-slot:[`item.memo`]="{ item }">
+                        <div class="memo-container">
+                            <span>{{ item.memo }}</span>
+                        </div>
+                    </template>
+                    <template v-slot:[`item.media`]="{ item }">
+                        <div :elevation="4" style="height: 168px; width: 400px">
+                            <v-img
+                                v-for="img in item.media"
+                                :key="img"
+                                :src="img"
+                                max-height="168"
+                                max-width="64"
+                            />
+                        </div>
+                    </template>
+                    <template v-slot:[`item.actions`]="{ item }">
+                        <v-dialog v-model="dialog" width="600px">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    color="primary"
+                                    dark
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-icon small> mdi-delete </v-icon>
+                                </v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="text-h5"
+                                        >Use Google's location service?</span
+                                    >
+                                </v-card-title>
+                                <v-card-text> 确定要封禁 </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="green darken-1"
+                                        text
+                                        @click="dialog = false"
+                                    >
+                                        取消
+                                    </v-btn>
+                                    <v-btn
+                                        color="green darken-1"
+                                        text
+                                        @click="() => forbit(item)"
+                                    >
+                                        确定
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </template>
+                    <template v-slot:[`item.create_time`]="{ item }">
+                        {{ item.create_time }}
+                    </template>
+                    <template v-slot:no-data>
+                        <v-btn color="primary" @click="() => {}"> Reset </v-btn>
+                    </template>
+                    <template v-slot:footer>
+                        <v-container style="height: 64px">
+                            <v-row>
+                                <v-col
+                                    cols="12"
+                                    class="d-flex justify-end align-center"
+                                >
+                                    <span>PAGE: {{ page }}</span>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        class="mr-2"
+                                        elevation="2"
+                                        small
+                                        fab
+                                        :class="{
+                                            'disable-events': page === 1,
+                                        }"
+                                        @click="prevPage"
+                                    >
+                                        <v-icon dark> mdi-chevron-left </v-icon>
+                                    </v-btn>
+                                    <v-btn
+                                        elevation="2"
+                                        small
+                                        fab
+                                        @click="nextPage"
+                                    >
+                                        <v-icon dark>
+                                            mdi-chevron-right
+                                        </v-icon>
+                                    </v-btn>
+                                </v-col>
                             </v-row>
-                        </v-card>
-                    </v-slide-item>
-                </v-slide-group>
-            </v-sheet>
-        </template>
-        <template v-slot:item.actions="{ item }">
-            <v-icon small class="mr-2" @click="editItem(item)">
-                mdi-pencil
-            </v-icon>
-            <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-        </template>
-        <template v-slot:item.create_time="{ item }">
-            {{ item.create_time }}
-        </template>
-        <template v-slot:no-data>
-            <v-btn color="primary" @click="initialize"> Reset </v-btn>
-        </template>
-        <template v-slot:footer>
-            <div>This is a footer</div>
-        </template>
-    </v-data-table>
+                        </v-container>
+                    </template>
+                </v-data-table>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
@@ -76,6 +133,9 @@ export default {
 
 
     data: () => ({
+        dialog: false,
+        model: true,
+        page: 1,
         table: {
             headers: [
                 {
@@ -127,7 +187,32 @@ export default {
     },
 
     methods: {
-
+        // 上一页
+        prevPage () {
+            if (this.page === 1) {
+                return;
+            }
+            this.page -= 1;
+            this.$store.dispatch('square/list', { page: this.page })
+        },
+        // 下一页
+        nextPage () {
+            this.page += 1;
+            this.$store.dispatch('square/list', { page: this.page })
+        },
+        // table每行颜色
+        itemRowBackground: function (item) {
+            let colors = {
+                0: 'green lighten-4',
+                1: '',
+                2: 'red lighten-4',
+            }
+            return colors[item.status]
+        },
+        forbit (item) {
+            this.dialog = false;
+            this.$store.dispatch('square/forbid', { id: item.id });
+        }
     },
 };
 </script>
