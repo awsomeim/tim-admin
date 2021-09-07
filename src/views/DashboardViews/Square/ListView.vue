@@ -40,46 +40,16 @@
                         </div>
                     </template>
                     <template v-slot:[`item.actions`]="{ item }">
-                        <v-dialog v-model="dialog" width="600px">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                    color="primary"
-                                    dark
-                                    v-bind="attrs"
-                                    v-on="on"
-                                >
-                                    <v-icon small> mdi-delete </v-icon>
-                                </v-btn>
-                            </template>
-                            <v-card>
-                                <v-card-title>
-                                    <span class="text-h5"
-                                        >Use Google's location service?</span
-                                    >
-                                </v-card-title>
-                                <v-card-text> 确定要封禁 </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="green darken-1"
-                                        text
-                                        @click="dialog = false"
-                                    >
-                                        取消
-                                    </v-btn>
-                                    <v-btn
-                                        color="green darken-1"
-                                        text
-                                        @click="() => forbit(item)"
-                                    >
-                                        确定
-                                    </v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
+                        <v-btn
+                            color="primary"
+                            dark
+                            @click="() => forbit(item)"
+                        >
+                            <v-icon small> mdi-delete </v-icon>
+                        </v-btn>
                     </template>
                     <template v-slot:[`item.create_time`]="{ item }">
-                        {{ item.create_time }}
+                        {{ item.create_time | dateformat }}
                     </template>
                     <template v-slot:no-data>
                         <v-btn color="primary" @click="() => {}"> Reset </v-btn>
@@ -128,6 +98,7 @@
 <script>
 
 import { mapGetters } from 'vuex'
+import dayjs from 'dayjs'
 
 export default {
 
@@ -186,6 +157,13 @@ export default {
         this.$store.dispatch('square/load')
     },
 
+    filters: {
+        dateformat: function (value) {
+            if (!value) return ''
+            return dayjs(value).format('YYYY-MM-DD HH:mm:ss')
+        }
+    },
+
     methods: {
         // 上一页
         prevPage () {
@@ -209,9 +187,14 @@ export default {
             }
             return colors[item.status]
         },
-        forbit (item) {
-            this.dialog = false;
-            this.$store.dispatch('square/forbid', { id: item.id });
+        async forbit (item) {
+            const res = await this.$dialog.warning({
+                text: 'Do you really want to exit?',
+                title: 'Warning'
+            })
+            console.log(res, item);
+            return;
+            // this.$store.dispatch('square/forbid', { id: item.id });
         }
     },
 };
